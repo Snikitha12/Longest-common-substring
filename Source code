@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+
+std::string longestCommonSubstring(const std::string& str1, const std::string& str2) {
+    int len1 = str1.length();
+    int len2 = str2.length();
+
+    // Create a table to store the lengths of longest common suffixes
+    std::vector<std::vector<int>> table(len1 + 1, std::vector<int>(len2 + 1, 0));
+    int longest = 0; // Length of the longest common substring
+    int endIdx = 0;  // Ending index of the longest common substring
+
+    // Fill the table
+    for (int i = 1; i <= len1; ++i) {
+        for (int j = 1; j <= len2; ++j) {
+            if (str1[i - 1] == str2[j - 1]) {
+                table[i][j] = table[i - 1][j - 1] + 1;
+                if (table[i][j] > longest) {
+                    longest = table[i][j];
+                    endIdx = i;
+                }
+            } else {
+                table[i][j] = 0;
+            }
+        }
+    }
+
+    return str1.substr(endIdx - longest, longest);
+}
+
+int main() {
+    std::string str1 = "programming";
+    std::string str2 = "programmer";
+
+    std::string result = longestCommonSubstring(str1, str2);
+    std::cout << "Longest Common Substring: " << result << std::endl;
+
+    return 0;
+}
